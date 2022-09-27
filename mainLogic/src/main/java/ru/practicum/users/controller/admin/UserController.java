@@ -1,4 +1,4 @@
-package ru.practicum.users.controller;
+package ru.practicum.users.controller.admin;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ import ru.practicum.users.service.UserService;
 
 @Slf4j
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/admin/users")
 
 public class UserController {
 

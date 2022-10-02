@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.practicum.users.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -30,4 +31,9 @@ public class Event {
     private Long participantLimit;
     private Boolean requestModeration;
     private String title;
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn
+    @JsonIgnore
+    private User user;
+    private State state = State.PUBLISHED;
 }

@@ -23,5 +23,7 @@ public class Location {
     private Float lat;
     @NotNull
     private Float lon;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Event> events;
 
 }

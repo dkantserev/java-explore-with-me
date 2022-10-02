@@ -3,9 +3,12 @@ package ru.practicum.users.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.practicum.events.model.Event;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,4 +26,7 @@ public class User {
     @Email
     @Column(name = "email",unique = true)
     private String email;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Event> eventList;
+
 }

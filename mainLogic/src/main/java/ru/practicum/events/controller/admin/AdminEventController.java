@@ -1,15 +1,12 @@
 package ru.practicum.events.controller.admin;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.model.State;
 import ru.practicum.events.service.admin.AdminEventService;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -35,5 +32,23 @@ public class AdminEventController {
 
         return adminEventService.findByParam(users,states,categories,rangeStart,rangeEnd,from,size);
     }
+
+    @PutMapping("/events/{eventId}")
+    public EventDto edit(@RequestBody EventDto eventDto,
+                         @PathVariable(name = "eventId") Long eventId){
+        return adminEventService.edit(eventDto,eventId);
+    }
+
+    @PutMapping("/events/{eventId}/publish")
+    public EventDto publish(@PathVariable(name = "eventId") Long eventId){
+        return adminEventService.publish(eventId);
+    }
+
+    @PutMapping("/events/{eventId}/reject")
+    public EventDto reject(@PathVariable(name = "eventId") Long eventId){
+        return adminEventService.reject(eventId);
+    }
+
+
 
 }

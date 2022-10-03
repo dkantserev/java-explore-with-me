@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.practicum.request.model.Request;
 import ru.practicum.users.model.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,4 +38,6 @@ public class Event {
     @JsonIgnore
     private User user;
     private State state = State.PUBLISHED;
+    @OneToMany(mappedBy = "eventM", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Request> requestList;
 }

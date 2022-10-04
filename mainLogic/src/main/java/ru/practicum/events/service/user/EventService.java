@@ -29,14 +29,16 @@ public class EventService {
     }
 
     public EventDto add(Long userId, EventDto event) {
-        if (userStorage.findById(userId).isPresent()) {
-            event.setUser(userStorage.findById(userId).orElseThrow(RuntimeException::new));
-        }
+
         if (locationStorage.findIdByCoordinates(event.getLocation().getLat(),
                 event.getLocation().getLon()).isEmpty()) {
             locationStorage.save(event.getLocation());
         }
-        return EventDtoMapper.toDto(eventStorage.save(EventDtoMapper.toModel(event)));
+        Long id = eventStorage.save(EventDtoMapper.toModel(event)).getId();
+        eventStorage.findById(id).orElseThrow(RuntimeException::new).setUser(userStorage.findById(userId)
+                .orElseThrow(RuntimeException::new));
+
+        return EventDtoMapper.toDto(eventStorage.findById(id).orElseThrow(RuntimeException::new));
     }
 
     public UpdateEventRequest edit(Long userId, UpdateEventRequest event) {

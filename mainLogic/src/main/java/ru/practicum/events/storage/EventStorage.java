@@ -14,6 +14,9 @@ import java.util.Optional;
 @Repository
 public interface EventStorage extends JpaRepository<Event, Long> {
 
+    @Query("select e from Event e where  e.state=?1")
+    public List<Event> undefinde(State state);
+
     @Query("select e from Event e where e.user.id=?1 and e.id>?2 order by e.id ")
     public List<Event> findByUserId(Long id, Long from);
 

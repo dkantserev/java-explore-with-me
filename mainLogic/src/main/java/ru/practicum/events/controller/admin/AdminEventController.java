@@ -39,14 +39,20 @@ public class AdminEventController {
         return adminEventService.edit(eventDto,eventId);
     }
 
-    @PutMapping("/events/{eventId}/publish")
+    @PatchMapping("/events/{eventId}/publish")
     public EventDto publish(@PathVariable(name = "eventId") Long eventId){
         return adminEventService.publish(eventId);
     }
 
-    @PutMapping("/events/{eventId}/reject")
+    @PatchMapping("/events/{eventId}/reject")
     public EventDto reject(@PathVariable(name = "eventId") Long eventId){
         return adminEventService.reject(eventId);
+    }
+
+    @PatchMapping("/events/undefined/publish")
+    public List<EventDto> undefined (){
+        return adminEventService.undefined();
+
     }
 
 

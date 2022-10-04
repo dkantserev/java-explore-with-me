@@ -31,5 +31,5 @@ public class EventDto {
     @Min(3)
     @Max(120)
     private String title;
-    private User user;
+
 }

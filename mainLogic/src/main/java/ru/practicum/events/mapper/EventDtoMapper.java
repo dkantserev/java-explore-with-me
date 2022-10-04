@@ -26,7 +26,7 @@ public class EventDtoMapper {
         event.setParticipantLimit(dto.getParticipantLimit());
         event.setRequestModeration(dto.getRequestModeration());
         event.setTitle(dto.getTitle());
-        event.setUser(dto.getUser());
+
         return event;
     }
 
@@ -42,7 +42,7 @@ public class EventDtoMapper {
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
                 .title(event.getTitle())
-                .user(event.getUser())
+
                 .build();
     }
 

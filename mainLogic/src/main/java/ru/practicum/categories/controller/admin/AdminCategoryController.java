@@ -8,11 +8,11 @@ import ru.practicum.categories.service.CategoryService;
 @Slf4j
 @RestController
 @RequestMapping(path = "/admin/categories")
-public class CategoryController {
+public class AdminCategoryController {
 
     private final CategoryService service;
 
-    public CategoryController(CategoryService service) {
+    public AdminCategoryController(CategoryService service) {
         this.service = service;
     }
 
@@ -30,4 +30,5 @@ public class CategoryController {
     public void delete(@PathVariable Long catId){
         service.delete(catId);
     }
+
 }

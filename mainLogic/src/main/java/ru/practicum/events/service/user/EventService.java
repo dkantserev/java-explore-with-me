@@ -32,11 +32,14 @@ public class EventService {
 
         if (locationStorage.findIdByCoordinates(event.getLocation().getLat(),
                 event.getLocation().getLon()).isEmpty()) {
-            locationStorage.save(event.getLocation());
+            locationStorage.save(EventDtoMapper.toLocation(event.getLocation()));
         }
         Long id = eventStorage.save(EventDtoMapper.toModel(event)).getId();
-        eventStorage.findById(id).orElseThrow(RuntimeException::new).setUser(userStorage.findById(userId)
+        Event e = eventStorage.findById(id).orElseThrow(RuntimeException::new);
+        e.setUser(userStorage.findById(userId).orElseThrow(RuntimeException::new));
+        e.setLocation(locationStorage.findIdByCoordinates(event.getLocation().getLat(), event.getLocation().getLon())
                 .orElseThrow(RuntimeException::new));
+        eventStorage.saveAndFlush(e);
 
         return EventDtoMapper.toDto(eventStorage.findById(id).orElseThrow(RuntimeException::new));
     }

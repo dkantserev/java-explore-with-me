@@ -25,7 +25,7 @@ public class GuestCategoryController {
     }
 
     @GetMapping("/{catId}")
-    public CategoryDto getById(@RequestParam( name="catId") Long catId){
+    public CategoryDto getById(@PathVariable( name="catId") Long catId){
         return categoryService.getById(catId);
     }
 }

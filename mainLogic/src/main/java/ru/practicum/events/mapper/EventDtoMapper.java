@@ -1,10 +1,11 @@
 package ru.practicum.events.mapper;
 
 import ru.practicum.events.dto.EventDto;
+import ru.practicum.events.dto.LocationDto;
 import ru.practicum.events.model.Event;
+import ru.practicum.events.model.Location;
 import ru.practicum.events.model.UpdateEventRequest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,10 +17,9 @@ public class EventDtoMapper {
 
     public static Event toModel(EventDto dto) {
         var event = new Event();
-        event.setId(dto.getEventId());
+        event.setId(dto.getId());
         event.setAnnotation(dto.getAnnotation());
         event.setCategory(dto.getCategory());
-        event.setLocation(dto.getLocation());
         event.setDescription(dto.getDescription());
         event.setEventDate(LocalDateTime.parse(dto.getEventDate(), DATE_FORMAT));
         event.setPaid(dto.getPaid());
@@ -32,16 +32,17 @@ public class EventDtoMapper {
 
     public static EventDto toDto(Event event) {
         return EventDto.builder()
-                .eventId(event.getId())
+                .id(event.getId())
                 .annotation(event.getAnnotation())
                 .category(event.getCategory())
-                .location(event.getLocation())
+                .location(EventDtoMapper.locationDto(event.getLocation()))
                 .description(event.getDescription())
-                .eventDate(event.getEventDate().toString())
+                .eventDate(event.getEventDate().format(DATE_FORMAT))
                 .paid(event.getPaid())
                 .participantLimit(event.getParticipantLimit())
                 .requestModeration(event.getRequestModeration())
                 .title(event.getTitle())
+                .state(event.getState())
 
                 .build();
     }
@@ -61,6 +62,22 @@ public class EventDtoMapper {
 
 
         return update;
+    }
+
+    public static LocationDto locationDto(Location location) {
+        return LocationDto.builder()
+                .Id(location.getId())
+                .lat(location.getLat())
+                .lon(location.getLon())
+                .build();
+    }
+
+    public static Location toLocation(LocationDto dto) {
+        var location = new Location();
+        location.setId(dto.getId());
+        location.setLat(dto.getLat());
+        location.setLon(dto.getLon());
+        return location;
     }
 }
 

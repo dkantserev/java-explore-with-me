@@ -44,17 +44,17 @@ public interface EventStorage extends JpaRepository<Event, Long> {
     @Query("select  e from  Event e where e.state in(?1) ")
     public List<Event> findByStates(List<State> states);
 
-    @Query("select  e from  Event e where e.state in(?1) ")
+    @Query("select  e from  Event e where e.category in(?1) ")
     public List<Event> findByCategories(List<Long> categories);
 
     @Query("select  e from  Event e where e.eventDate<=?1 ")
-    public List<Event> findByEnd(Optional<String> rangeEnd);
+    public List<Event> findByEnd(LocalDateTime rangeEnd);
 
     @Query("select  e from  Event e where e.eventDate>=?1 ")
-    public List<Event> findByStart(Optional<String> rangeStart);
+    public List<Event> findByStart(LocalDateTime rangeStart);
 
     @Query("select  e from  Event e where e.eventDate>=?1 and e.eventDate<=?1 ")
-    public List<Event>  findByStartAndEnd(Optional<String> rangeStart, Optional<String> rangeEnd);
+    public List<Event>  findByStartAndEnd(LocalDateTime rangeStart, LocalDateTime rangeEnd);
 
     @Query("select  e from  Event e where e.state in(?1) and e.category in(?2)  ")
     public List<Event> findByStatesAndCategories(List<State> states, List<Long> categories);

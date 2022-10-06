@@ -9,11 +9,9 @@ import ru.practicum.events.storage.EventStorage;
 import ru.practicum.events.storage.LocationStorage;
 import ru.practicum.users.storage.UserStorage;
 
-import javax.management.RuntimeErrorException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -81,17 +79,21 @@ public class AdminEventService {
         }
         if (users.isEmpty() && states.isEmpty() && categories.isEmpty() && rangeEnd.isPresent() &&
                 rangeStart.isEmpty()) {
-            eventStorage.findByEnd(rangeEnd).forEach(o -> r.add(EventDtoMapper.toDto(o)));
+            eventStorage.findByEnd(LocalDateTime.parse(rangeEnd.get(), DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH:mm:ss"))).forEach(o -> r.add(EventDtoMapper.toDto(o)));
 
         }
         if (users.isEmpty() && states.isEmpty() && categories.isEmpty() && rangeEnd.isEmpty() &&
                 rangeStart.isPresent()) {
-            eventStorage.findByStart(rangeStart).forEach(o -> r.add(EventDtoMapper.toDto(o)));
+            eventStorage.findByStart(LocalDateTime.parse(rangeStart.get(), DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH:mm:ss"))).forEach(o -> r.add(EventDtoMapper.toDto(o)));
 
         }
         if (users.isEmpty() && states.isEmpty() && categories.isEmpty() && rangeEnd.isPresent() &&
                 rangeStart.isPresent()) {
-            eventStorage.findByStartAndEnd(rangeStart, rangeEnd).forEach(o -> r.add(EventDtoMapper.toDto(o)));
+            eventStorage.findByStartAndEnd(LocalDateTime.parse(rangeStart.get(), DateTimeFormatter
+                    .ofPattern("yyyy-MM-dd HH:mm:ss")), LocalDateTime.parse(rangeEnd.get(),
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).forEach(o -> r.add(EventDtoMapper.toDto(o)));
 
         }
         if (users.isEmpty() && !states.isEmpty() && !categories.isEmpty() && rangeEnd.isEmpty() &&
@@ -104,7 +106,7 @@ public class AdminEventService {
             eventStorage.findByUsersAndCategories(users, categories).forEach(o -> r.add(EventDtoMapper.toDto(o)));
 
         }
-        if (!users.isEmpty() && states.isEmpty() && !categories.isEmpty() && rangeEnd.isEmpty() &&
+        if (!users.isEmpty() && !states.isEmpty() && categories.isEmpty() && rangeEnd.isEmpty() &&
                 rangeStart.isEmpty()) {
             eventStorage.findByUsersAndState(users, states).forEach(o -> r.add(EventDtoMapper.toDto(o)));
 
@@ -126,8 +128,8 @@ public class AdminEventService {
         event.setParticipantLimit(eventDto.getParticipantLimit());
         event.setTitle(eventDto.getTitle());
         event.setRequestModeration(eventDto.getRequestModeration());
-        if (event.getLocation() != null) {
-            event.setLocation(eventDto.getLocation());
+        if (eventDto.getLocation() != null) {
+            event.setLocation(EventDtoMapper.toLocation(eventDto.getLocation()));
         }
         eventStorage.saveAndFlush(event);
         return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow(RuntimeException::new));
@@ -142,7 +144,7 @@ public class AdminEventService {
 
     public EventDto reject(Long eventId) {
         var event = eventStorage.findById(eventId).orElseThrow(RuntimeException::new);
-        event.setState(State.REJECT);
+        event.setState(State.CANCELED);
         eventStorage.saveAndFlush(event);
         return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow(RuntimeException::new));
     }

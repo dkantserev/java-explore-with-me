@@ -24,7 +24,7 @@ public class Event {
     @Column(columnDefinition="TEXT")
     private String annotation;
     private Long category;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnore
     private Location location;

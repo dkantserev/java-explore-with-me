@@ -1,6 +1,6 @@
 package ru.practicum.events.model;
 
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table
+@Table(name = "locations",uniqueConstraints = { @UniqueConstraint( columnNames = { "lat", "lon" } ) } )
 public class Location {
 
     @Id

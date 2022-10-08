@@ -1,6 +1,7 @@
 package ru.practicum.events.service.admin;
 
 import org.springframework.stereotype.Service;
+import ru.practicum.categories.storage.CategoryStorage;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;
@@ -21,6 +22,7 @@ public class AdminEventService {
     final private EventStorage eventStorage;
     final private LocationStorage locationStorage;
     final private UserStorage userStorage;
+
 
     public AdminEventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage) {
         this.eventStorage = eventStorage;
@@ -150,7 +152,7 @@ public class AdminEventService {
     }
 
     public List<EventDto> undefined() {
-        List<Event> r = eventStorage.undefinde(State.UNDEFINED);
+        List<Event> r = eventStorage.undefinde(State.PENDING);
         r.forEach(o -> o.setState(State.PUBLISHED));
         eventStorage.flush();
         List<EventDto> q = new ArrayList<>();

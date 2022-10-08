@@ -2,5 +2,8 @@ package ru.practicum.request.model;
 
 public enum Status {
     PENDING,
-    CANSEL
+    CANCELED,
+    CONFIRMED,
+    NEW,
+    REJECTED
 }

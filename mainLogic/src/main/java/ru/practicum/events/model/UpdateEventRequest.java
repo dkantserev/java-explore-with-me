@@ -22,6 +22,7 @@ public class UpdateEventRequest {
     private Boolean paid;
     private Long participantLimit;
     private Location location;
+    private State state;
     @Min(3)
     @Max(120)
     private String title;

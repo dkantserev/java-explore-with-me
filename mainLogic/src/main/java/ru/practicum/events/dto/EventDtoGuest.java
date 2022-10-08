@@ -3,9 +3,9 @@ package ru.practicum.events.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import ru.practicum.categories.model.Category;
 import ru.practicum.events.model.State;
 import ru.practicum.users.model.User;
-
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -13,13 +13,13 @@ import javax.validation.constraints.Min;
 
 @Data
 @Builder
-public class EventDto {
+public class EventDtoGuest {
 
     private Long id;
     @Min(20)
     @Max(2000)
     private String annotation;
-    private Long category;
+    private Category category;
     private LocationDto location;
     private User initiator;
     @Min(20)

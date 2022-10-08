@@ -3,7 +3,8 @@ package ru.practicum.events.model;
 public enum State {
     PUBLISHED,
     REJECT,
-    UNDEFINED,
-    CANCELED
+    PENDING,
+    CANCELED,
+    NEW
 
 }

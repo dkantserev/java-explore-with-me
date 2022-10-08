@@ -21,7 +21,7 @@ public class Request {
     private LocalDateTime created;
     private Long event;
     private Long requester;
-    private Status status;
+    private Status status = Status.NEW;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn
     @JsonIgnore

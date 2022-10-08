@@ -1,6 +1,8 @@
 package ru.practicum.events.mapper;
 
 import ru.practicum.events.dto.EventDto;
+
+import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.dto.LocationDto;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.model.Location;
@@ -43,9 +45,28 @@ public class EventDtoMapper {
                 .requestModeration(event.getRequestModeration())
                 .title(event.getTitle())
                 .state(event.getState())
-
+                .initiator(event.getUser())
+                .views(event.getViews())
                 .build();
     }
+
+    public static EventDtoGuest toDtoGuest(Event event) {
+        return EventDtoGuest.builder()
+                .id(event.getId())
+                .annotation(event.getAnnotation())
+                .location(EventDtoMapper.locationDto(event.getLocation()))
+                .description(event.getDescription())
+                .eventDate(event.getEventDate().format(DATE_FORMAT))
+                .paid(event.getPaid())
+                .participantLimit(event.getParticipantLimit())
+                .requestModeration(event.getRequestModeration())
+                .title(event.getTitle())
+                .state(event.getState())
+                .initiator(event.getUser())
+                .views(event.getViews())
+                .build();
+    }
+
 
     public static UpdateEventRequest toUpdateDto(Event event) {
 
@@ -54,11 +75,12 @@ public class EventDtoMapper {
         update.setAnnotation(event.getAnnotation());
         update.setCategory(event.getCategory());
         update.setDescription(event.getDescription());
-        update.setEventDate(event.getEventDate().toString());
+        update.setEventDate(event.getEventDate().format(DATE_FORMAT));
         update.setPaid(event.getPaid());
         update.setParticipantLimit(event.getParticipantLimit());
         update.setTitle(event.getTitle());
         update.setLocation(event.getLocation());
+        update.setState(event.getState());
 
 
         return update;

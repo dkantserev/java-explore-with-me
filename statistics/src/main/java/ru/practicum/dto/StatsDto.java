@@ -12,13 +12,13 @@ import lombok.Data;
 public class StatsDto {
 
     private Long id;
-    @NotNull
+
     private String app;
-    @NotNull
+
     private String uri;
-    @NotNull
+
     private String ip;
-    @NotNull
+
 
     private String timestamp;
 

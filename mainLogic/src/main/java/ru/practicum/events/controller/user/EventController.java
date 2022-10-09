@@ -2,6 +2,7 @@ package ru.practicum.events.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.HTTPclient.Client;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.model.UpdateEventRequest;
@@ -15,9 +16,11 @@ import java.util.List;
 public class EventController {
 
     final private EventService eventService;
+    final private Client client;
 
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, Client client) {
         this.eventService = eventService;
+        this.client = client;
     }
 
     @PostMapping("/{userId}/events")
@@ -37,6 +40,7 @@ public class EventController {
     public List<EventDtoGuest> get(@PathVariable(name = "userId") Long userId,
                               @RequestParam(defaultValue = "0") Long from,
                               @RequestParam(defaultValue = "10") Long size) {
+
         return eventService.get(userId, from, size);
     }
 

@@ -10,16 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.StatsDto;
+import ru.practicum.dto.StatsView;
 import ru.practicum.service.StatsService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -37,9 +36,17 @@ public class StatisticsController {
         return service.add(statsDto);
     }
 
+    @GetMapping("/views/{eventId}")
+    public Long giveViews(@PathVariable (name = "eventId") Long eventId){
+        return service.getViews(eventId);
+    }
+
     @GetMapping( path = "stats")
-    public List<StatsDto> get(){
-        return service.get();
+    public List<StatsView> get(@RequestParam (name ="start") Optional<String> start,
+                               @RequestParam(name= "end") Optional<String> end,
+                               @RequestParam(name ="uris",defaultValue = "") List<String> uris,
+                               @RequestParam(name ="unique",defaultValue = "false") Boolean unique  ){
+        return service.get(start,end,uris,unique);
     }
 
 

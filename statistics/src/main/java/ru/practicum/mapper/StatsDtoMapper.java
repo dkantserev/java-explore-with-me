@@ -2,6 +2,7 @@ package ru.practicum.mapper;
 
 
 import ru.practicum.dto.StatsDto;
+import ru.practicum.dto.StatsView;
 import ru.practicum.model.Stats;
 
 import java.time.LocalDateTime;
@@ -30,6 +31,14 @@ public class StatsDtoMapper {
                 .uri(stats.getUri())
                 .ip(stats.getIp())
                 .timestamp(stats.getTimestamp().format(DATE_FORMAT))
+                .build();
+    }
+
+    public static StatsView toDtoView(Stats stats) {
+
+        return StatsView.builder()
+                .app(stats.getApp())
+                .uri(stats.getUri())
                 .build();
     }
 }

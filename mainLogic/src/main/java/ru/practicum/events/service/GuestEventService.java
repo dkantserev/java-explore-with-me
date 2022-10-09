@@ -1,13 +1,14 @@
 package ru.practicum.events.service;
 
 import org.springframework.stereotype.Service;
+import ru.practicum.HTTPclient.Client;
 import ru.practicum.categories.storage.CategoryStorage;
-import ru.practicum.events.dto.EventDto;
 
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.State;
 import ru.practicum.events.storage.EventStorage;
+import ru.practicum.request.storage.RequestStorage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,10 +23,14 @@ public class GuestEventService {
 
     private final EventStorage eventStorage;
     private final CategoryStorage categoryStorage;
+    private final Client client;
+    private final RequestStorage requestStorage;
 
-    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage) {
+    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage, Client client, RequestStorage requestStorage) {
         this.eventStorage = eventStorage;
         this.categoryStorage = categoryStorage;
+        this.client = client;
+        this.requestStorage = requestStorage;
     }
 
     private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -39,14 +44,16 @@ public class GuestEventService {
                 && rangeEnd.isPresent() && onlyAvailable.isPresent()) {
             eventStorage.findByAllParamPlusTextPlusAvailable(text.get().toLowerCase(), categories,
                             paid.get(), LocalDateTime.parse(rangeStart.get(), DateTimeFormatter.ofPattern(FORMAT)),
-                            LocalDateTime.parse(rangeEnd.get(), DateTimeFormatter.ofPattern(FORMAT)), onlyAvailable.get())
+                            LocalDateTime.parse(rangeEnd.get(), DateTimeFormatter.ofPattern(FORMAT)),
+                            onlyAvailable.get())
                     .forEach(o -> r.add(EventDtoMapper.toDtoGuest(o)));
         }
         if (text.isEmpty() && !categories.isEmpty() && paid.isPresent() && rangeStart.isPresent()
                 && rangeEnd.isPresent() && onlyAvailable.isPresent()) {
             eventStorage.findByAllParamPlusAvailable(categories,
                             paid.get(), LocalDateTime.parse(rangeStart.get(), DateTimeFormatter.ofPattern(FORMAT)),
-                            LocalDateTime.parse(rangeEnd.get(), DateTimeFormatter.ofPattern(FORMAT)), onlyAvailable.get())
+                            LocalDateTime.parse(rangeEnd.get(), DateTimeFormatter.ofPattern(FORMAT)),
+                            onlyAvailable.get())
                     .forEach(o -> r.add(EventDtoMapper.toDtoGuest(o)));
         }
         if (text.isEmpty() && !categories.isEmpty() && paid.isPresent() && rangeStart.isPresent()
@@ -90,7 +97,10 @@ public class GuestEventService {
             eventStorage.findByText(text.get().toLowerCase()).forEach(o -> r.add(EventDtoMapper.toDtoGuest(o)));
         }
         for (EventDtoGuest eventDtoGuest : r) {
-            eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId()).orElseThrow().getCategory()).orElseThrow());
+            eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId())
+                    .orElseThrow().getCategory()).orElseThrow());
+            eventDtoGuest.setViews(client.giveViews(eventDtoGuest.getId()));
+            eventDtoGuest.setConfirmedRequests(requestStorage.countRequest(eventDtoGuest.getId()));
         }
         if (sort.isPresent()) {
             switch (sort.get()) {
@@ -111,6 +121,8 @@ public class GuestEventService {
         if(eventStorage.findById(id).orElseThrow().getState()==State.PUBLISHED) {
             var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow());
             r.setCategory(categoryStorage.findById(eventStorage.findById(id).orElseThrow().getId()).orElseThrow());
+            r.setViews(client.giveViews(r.getId()));
+            r.setConfirmedRequests(requestStorage.countRequest(r.getId()));
             return r;
         }
         throw new RuntimeException();

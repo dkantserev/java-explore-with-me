@@ -17,13 +17,13 @@ public class Stats {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
     private String app;
-    @NotNull
+
     private String uri;
-    @NotNull
+
     private String ip;
-    @NotNull
+
     private LocalDateTime timestamp;
 
 }

@@ -121,7 +121,7 @@ public class GuestEventService {
     public EventDtoGuest getById(Long id) {
         if (eventStorage.findById(id).orElseThrow().getState() == State.PUBLISHED) {
             var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow());
-            r.setCategory(categoryStorage.findById(eventStorage.findById(id).orElseThrow().getId()).orElseThrow());
+            r.setCategory(categoryStorage.findById(eventStorage.findById(id).orElseThrow().getCategory()).orElseThrow());
             r.setViews(client.giveViews(r.getId()));
             r.setConfirmedRequests(requestStorage.countRequest(r.getId()));
             return r;

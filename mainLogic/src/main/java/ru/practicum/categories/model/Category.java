@@ -14,7 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "category")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     Long id;
     @NotEmpty
     @Column(unique = true)

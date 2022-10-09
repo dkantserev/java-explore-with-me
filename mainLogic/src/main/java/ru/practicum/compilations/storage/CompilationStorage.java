@@ -8,8 +8,8 @@ import ru.practicum.compilations.model.Compilation;
 import java.util.List;
 
 @Repository
-public interface CompilationStorage extends JpaRepository<Compilation,Long> {
+public interface CompilationStorage extends JpaRepository<Compilation, Long> {
 
-@Query("select c from Compilation c where c.pinned=?1")
+    @Query("select c from Compilation c where c.pinned=?1")
     public List<Compilation> findByPinned(Boolean pinned);
 }

@@ -62,20 +62,20 @@ public class RequestService {
     }
 
     public List<RequestDto> getByUserId(Long userId) {
-      List<RequestDto> r = new ArrayList<>();
-      requestStorage.findByRequesterId(userId).forEach(o->r.add(MapperRequestDto.toDto(o)));
-      return r;
+        List<RequestDto> r = new ArrayList<>();
+        requestStorage.findByRequesterId(userId).forEach(o -> r.add(MapperRequestDto.toDto(o)));
+        return r;
     }
 
     public List<RequestDto> getByUserIdAndEventId(Long userId, Long eventId) {
-           var  r =  new ArrayList<RequestDto>();
-                   requestStorage.findByRequesterIdAndEvent(userId,eventId).forEach(o->r.add(MapperRequestDto.toDto(o)));
+        var r = new ArrayList<RequestDto>();
+        requestStorage.findByRequesterIdAndEvent(userId, eventId).forEach(o -> r.add(MapperRequestDto.toDto(o)));
         return r;
     }
 
     public RequestDto confirm(Long userId, Long eventId, Long reqId) {
-        if(Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId)&&
-                !eventStorage.findById(eventId).orElseThrow().getAvailable()){
+        if (Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId) &&
+                !eventStorage.findById(eventId).orElseThrow().getAvailable()) {
             var r = requestStorage.findById(reqId).orElseThrow();
             r.setStatus(Status.CONFIRMED);
             return MapperRequestDto.toDto(r);
@@ -84,7 +84,7 @@ public class RequestService {
     }
 
     public RequestDto reject(Long userId, Long eventId, Long reqId) {
-        if(Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId)){
+        if (Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId)) {
             var r = requestStorage.findById(reqId).orElseThrow();
             r.setStatus(Status.REJECTED);
             return MapperRequestDto.toDto(r);

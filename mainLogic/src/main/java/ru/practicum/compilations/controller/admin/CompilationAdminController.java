@@ -18,35 +18,35 @@ public class CompilationAdminController {
     }
 
     @PostMapping
-    public CompilationDtoReturn add(@RequestBody CompilationDto dto){
+    public CompilationDtoReturn add(@RequestBody CompilationDto dto) {
         return service.add(dto);
     }
 
     @DeleteMapping("/{compId}")
-    public void delete(@PathVariable( name= "compId") Long id){
+    public void delete(@PathVariable(name = "compId") Long id) {
         service.delete(id);
     }
 
     @DeleteMapping("/{compId}/events/{eventId}")
-    public void deleteEvent (@PathVariable( name= "compId") Long compId,
-                             @PathVariable ( name = "eventId") Long eventId){
-        service.deleteEvent(compId,eventId);
+    public void deleteEvent(@PathVariable(name = "compId") Long compId,
+                            @PathVariable(name = "eventId") Long eventId) {
+        service.deleteEvent(compId, eventId);
     }
 
-    @DeleteMapping ("/{compId}/pin")
-    public void pinFalse(@PathVariable( name= "compId") Long compId){
+    @DeleteMapping("/{compId}/pin")
+    public void pinFalse(@PathVariable(name = "compId") Long compId) {
         service.setPinFalse(compId);
     }
 
-    @PatchMapping ("/{compId}/pin")
-    public void pinTrue(@PathVariable( name= "compId") Long compId){
+    @PatchMapping("/{compId}/pin")
+    public void pinTrue(@PathVariable(name = "compId") Long compId) {
         service.setPinTrue(compId);
     }
 
     @PatchMapping("/{compId}/events/{eventId}")
-    public void addEvent(@PathVariable( name= "compId") Long compId,
-                         @PathVariable ( name = "eventId") Long eventId){
-        service.addEvent(compId,eventId);
+    public void addEvent(@PathVariable(name = "compId") Long compId,
+                         @PathVariable(name = "eventId") Long eventId) {
+        service.addEvent(compId, eventId);
     }
 
 }

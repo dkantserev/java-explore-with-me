@@ -1,6 +1,6 @@
 package ru.practicum.dto;
 
-import com.sun.istack.NotNull;
+
 import lombok.Builder;
 import lombok.Data;
 

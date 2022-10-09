@@ -5,14 +5,14 @@ import ru.practicum.categories.model.Category;
 
 public class CategoryMapper {
 
-    public static CategoryDto toDto(Category model){
+    public static CategoryDto toDto(Category model) {
         return CategoryDto.builder()
                 .id(model.getId())
                 .name(model.getName())
                 .build();
     }
 
-    public static Category toModel(CategoryDto dto){
+    public static Category toModel(CategoryDto dto) {
         var model = new Category();
         model.setId(dto.getId());
         model.setName(dto.getName());

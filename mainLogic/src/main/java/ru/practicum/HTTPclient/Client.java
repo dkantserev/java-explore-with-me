@@ -1,7 +1,6 @@
 package ru.practicum.HTTPclient;
 
 
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -40,19 +39,19 @@ public class Client {
         return headers;
     }
 
-    public void postStats(String url, String ip){
+    public void postStats(String url, String ip) {
         String path = "http://stats-server:9090/hit";
         ModelStats m = new ModelStats();
         m.setApp("MainLogic");
         m.setUri(url);
         m.setIp(ip);
         m.setTimestamp(LocalDateTime.now().format(DATE_FORMAT));
-        post(path,m);
+        post(path, m);
     }
 
-    public Long giveViews(Long eventId){
-        String path = "http://stats-server:9090/views/"+eventId.toString();
-        return getView(path,new HashMap<>());
+    public Long giveViews(Long eventId) {
+        String path = "http://stats-server:9090/views/" + eventId.toString();
+        return getView(path, new HashMap<>());
     }
 
 
@@ -68,6 +67,7 @@ public class Client {
 
         return response.getBody();
     }
+
     protected Long getView(String path, Map<String, Object> parameters) {
         HttpEntity<Long> requestEntity = new HttpEntity<>(getHeaders());
 

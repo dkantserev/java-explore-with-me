@@ -9,9 +9,9 @@ import java.util.List;
 
 public class MapperCompilationDto {
 
-    public static CompilationDto toDto(Compilation compilation){
+    public static CompilationDto toDto(Compilation compilation) {
         List<Long> l = new ArrayList<>();
-        compilation.getEvents().forEach(o-> l.add(o.getId()));
+        compilation.getEvents().forEach(o -> l.add(o.getId()));
         return CompilationDto.builder()
                 .id(compilation.getId())
                 .pinned(compilation.getPinned())
@@ -20,7 +20,7 @@ public class MapperCompilationDto {
                 .build();
     }
 
-    public static CompilationDtoReturn toDtoReturn(Compilation compilation){
+    public static CompilationDtoReturn toDtoReturn(Compilation compilation) {
 
         return CompilationDtoReturn.builder()
                 .id(compilation.getId())

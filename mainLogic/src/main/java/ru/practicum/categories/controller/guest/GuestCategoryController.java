@@ -19,13 +19,13 @@ public class GuestCategoryController {
     }
 
     @GetMapping
-    public List<CategoryDto> get(@RequestParam (name ="size",defaultValue = "0") Long size,
-                                 @RequestParam (name ="from", defaultValue = "10")Long from){
-        return categoryService.get(size,from);
+    public List<CategoryDto> get(@RequestParam(name = "size", defaultValue = "0") Long size,
+                                 @RequestParam(name = "from", defaultValue = "10") Long from) {
+        return categoryService.get(size, from);
     }
 
     @GetMapping("/{catId}")
-    public CategoryDto getById(@PathVariable( name="catId") Long catId){
+    public CategoryDto getById(@PathVariable(name = "catId") Long catId) {
         return categoryService.getById(catId);
     }
 }

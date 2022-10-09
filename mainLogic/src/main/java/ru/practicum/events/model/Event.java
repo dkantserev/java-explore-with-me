@@ -43,7 +43,7 @@ public class Event {
     private User user;
     private State state = State.PENDING;
     @OneToMany(mappedBy = "eventM", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Request> requestList= new ArrayList<>();
+    private List<Request> requestList = new ArrayList<>();
     @ManyToMany(mappedBy = "events", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Compilation> compilation;
     private Boolean available = false;

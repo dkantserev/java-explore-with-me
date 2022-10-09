@@ -44,14 +44,14 @@ public class RequestController {
     @PatchMapping("/{userId}/events/{eventId}/requests/{reqId}/confirm")
     public RequestDto confirm(@PathVariable(name = "userId") Long userId,
                               @PathVariable(name = "eventId") Long eventId,
-                              @PathVariable(name = "reqId") Long reqId){
-        return requestService.confirm(userId,eventId,reqId);
+                              @PathVariable(name = "reqId") Long reqId) {
+        return requestService.confirm(userId, eventId, reqId);
     }
 
     @PatchMapping("/{userId}/events/{eventId}/requests/{reqId}/reject")
     public RequestDto reject(@PathVariable(name = "userId") Long userId,
                              @PathVariable(name = "eventId") Long eventId,
-                             @PathVariable(name = "reqId") Long reqId){
-        return requestService.reject(userId,eventId,reqId);
+                             @PathVariable(name = "reqId") Long reqId) {
+        return requestService.reject(userId, eventId, reqId);
     }
 }

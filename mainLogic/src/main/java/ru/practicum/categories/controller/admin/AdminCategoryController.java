@@ -27,7 +27,7 @@ public class AdminCategoryController {
     }
 
     @DeleteMapping("/{catId}")
-    public void delete(@PathVariable Long catId){
+    public void delete(@PathVariable Long catId) {
         service.delete(catId);
     }
 

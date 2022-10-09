@@ -24,8 +24,9 @@ public class CompilationGuestController {
                                           @RequestParam(name = "size", defaultValue = "10") Long size) {
         return service.getForGuest(pinned, from, size);
     }
+
     @GetMapping("/{compId}")
-    public CompilationDtoReturn getById(@PathVariable( name="compId") Long compId){
+    public CompilationDtoReturn getById(@PathVariable(name = "compId") Long compId) {
         return service.getById(compId);
     }
 }

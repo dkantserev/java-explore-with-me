@@ -5,7 +5,6 @@ import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.model.User;
 
 
-
 public class UserDtoMapper {
 
     public static UserDto toDTO(User use) {
@@ -23,6 +22,4 @@ public class UserDtoMapper {
         user.setId(dto.getId());
         return user;
     }
-
-
 }

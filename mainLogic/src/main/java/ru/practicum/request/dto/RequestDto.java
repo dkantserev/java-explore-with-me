@@ -5,7 +5,6 @@ import lombok.Data;
 import ru.practicum.request.model.Status;
 
 
-
 @Data
 @Builder
 public class RequestDto {

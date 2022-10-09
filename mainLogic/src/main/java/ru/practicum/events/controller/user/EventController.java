@@ -38,21 +38,21 @@ public class EventController {
 
     @GetMapping("/{userId}/events")
     public List<EventDtoGuest> get(@PathVariable(name = "userId") Long userId,
-                              @RequestParam(defaultValue = "0") Long from,
-                              @RequestParam(defaultValue = "10") Long size) {
+                                   @RequestParam(defaultValue = "0") Long from,
+                                   @RequestParam(defaultValue = "10") Long size) {
 
         return eventService.get(userId, from, size);
     }
 
     @GetMapping("/{userId}/events/{eventId}")
     public EventDtoGuest get(@PathVariable(name = "userId") Long userId,
-                              @PathVariable(name = "eventId") Long eventId) {
-        return eventService.getById(userId,eventId);
+                             @PathVariable(name = "eventId") Long eventId) {
+        return eventService.getById(userId, eventId);
     }
 
     @PatchMapping("/{userId}/events/{eventId}")
     public EventDto cansel(@PathVariable(name = "userId") Long userId,
-                           @PathVariable(name = "eventId") Long eventId){
-        return eventService.cansel(userId,eventId);
+                           @PathVariable(name = "eventId") Long eventId) {
+        return eventService.cansel(userId, eventId);
     }
 }

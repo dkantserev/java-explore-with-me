@@ -8,7 +8,6 @@ import ru.practicum.events.model.State;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 
 @Repository
@@ -28,7 +27,8 @@ public interface EventStorage extends JpaRepository<Event, Long> {
     public List<Event> findByAllParam(List<Long> users, List<State> states, List<Long> categories,
                                       LocalDateTime rangeStart, LocalDateTime rangeEnd);
 
-    @Query("select  e from  Event e where e.user.id in(?1) and e.state in(?2) and e.category in(?3) and e.eventDate<=?4  ")
+    @Query("select  e from  Event e where e.user.id in(?1) and e.state in(?2) and e.category in(?3) " +
+            "and e.eventDate<=?4  ")
     public List<Event> findByAllParamMinusStart(List<Long> users, List<State> states, List<Long> categories,
                                                 LocalDateTime parse);
 

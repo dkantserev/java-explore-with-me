@@ -29,14 +29,14 @@ public class UserController {
 
     @GetMapping
     public List<UserDto> getById(@RequestParam(name = "ids") List<Long> ids,
-                           @RequestParam(name = "from", defaultValue = "0") Long from,
-                           @RequestParam (name ="size",defaultValue = "10")Long size) {
-        return userService.get(ids,from,size);
+                                 @RequestParam(name = "from", defaultValue = "0") Long from,
+                                 @RequestParam(name = "size", defaultValue = "10") Long size) {
+        return userService.get(ids, from, size);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable (name="userId") Long userID){
-         userService.delete(userID);
+    public void deleteUser(@PathVariable(name = "userId") Long userID) {
+        userService.delete(userID);
     }
 
 

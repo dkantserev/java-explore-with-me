@@ -26,7 +26,8 @@ public class GuestEventService {
     private final Client client;
     private final RequestStorage requestStorage;
 
-    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage, Client client, RequestStorage requestStorage) {
+    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage, Client client,
+                             RequestStorage requestStorage) {
         this.eventStorage = eventStorage;
         this.categoryStorage = categoryStorage;
         this.client = client;
@@ -36,8 +37,8 @@ public class GuestEventService {
     private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public List<EventDtoGuest> get(Optional<String> text, List<Long> categories, Optional<Boolean> paid,
-                              Optional<String> rangeStart, Optional<String> rangeEnd, Optional<Boolean> onlyAvailable,
-                              Optional<String> sort, Long from, Long size) {
+                                   Optional<String> rangeStart, Optional<String> rangeEnd, Optional<Boolean> onlyAvailable,
+                                   Optional<String> sort, Long from, Long size) {
 
         List<EventDtoGuest> r = new ArrayList<>();
         if (text.isPresent() && !categories.isEmpty() && paid.isPresent() && rangeStart.isPresent()
@@ -118,7 +119,7 @@ public class GuestEventService {
 
 
     public EventDtoGuest getById(Long id) {
-        if(eventStorage.findById(id).orElseThrow().getState()==State.PUBLISHED) {
+        if (eventStorage.findById(id).orElseThrow().getState() == State.PUBLISHED) {
             var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow());
             r.setCategory(categoryStorage.findById(eventStorage.findById(id).orElseThrow().getId()).orElseThrow());
             r.setViews(client.giveViews(r.getId()));

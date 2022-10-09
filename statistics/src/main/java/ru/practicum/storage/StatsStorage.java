@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface StatsStorage extends JpaRepository<Stats,Long> {
+public interface StatsStorage extends JpaRepository<Stats, Long> {
 
     @Query("select DISTINCT s from Stats s where s.uri  like (?3) and s.timestamp>=?1 and s.timestamp<=?2 ")
     List<Stats> findByAllParam(LocalDateTime parse, LocalDateTime parse1, List<String> uris, boolean b);

@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "locations",uniqueConstraints = { @UniqueConstraint( columnNames = { "lat", "lon" } ) } )
+@Table(name = "locations", uniqueConstraints = {@UniqueConstraint(columnNames = {"lat", "lon"})})
 public class Location {
 
     @Id

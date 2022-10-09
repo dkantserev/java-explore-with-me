@@ -34,6 +34,6 @@ public class EventDtoGuest {
     @Min(3)
     @Max(120)
     private String title;
-    Long confirmedRequests =1L;
+    Long confirmedRequests = 1L;
 
 }

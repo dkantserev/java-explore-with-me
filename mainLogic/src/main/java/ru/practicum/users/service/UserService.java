@@ -25,9 +25,9 @@ public class UserService {
         return UserDtoMapper.toDTO(userStorage.save(UserDtoMapper.toModel(user)));
     }
 
-    public List<UserDto> get(List<Long> ids,Long from,Long size) {
+    public List<UserDto> get(List<Long> ids, Long from, Long size) {
         List<UserDto> r = new ArrayList<>();
-        userStorage.findByListId(ids).forEach(o->r.add(UserDtoMapper.toDTO(o)));
+        userStorage.findByListId(ids).forEach(o -> r.add(UserDtoMapper.toDTO(o)));
         return r.stream().skip(from).limit(size).collect(Collectors.toList());
     }
 

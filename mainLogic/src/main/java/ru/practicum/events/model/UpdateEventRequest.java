@@ -28,6 +28,4 @@ public class UpdateEventRequest {
     private String title;
 
 
-
-
 }

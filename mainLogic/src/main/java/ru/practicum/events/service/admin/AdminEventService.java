@@ -1,7 +1,7 @@
 package ru.practicum.events.service.admin;
 
 import org.springframework.stereotype.Service;
-import ru.practicum.categories.storage.CategoryStorage;
+
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;

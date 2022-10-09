@@ -22,39 +22,38 @@ public class AdminEventController {
     }
 
     @GetMapping("/events")
-    public List<EventDto> getByParam(@RequestParam (name ="users",defaultValue = "") List<Long> users,
-                                     @RequestParam (name ="states",defaultValue = "")List<State> states,
-                                     @RequestParam(name="categories",defaultValue = "")List<Long> categories,
-                                     @RequestParam(name= "rangeStart") Optional<String> rangeStart,
-                                     @RequestParam(name ="rangeEnd")Optional<String> rangeEnd,
-                                     @RequestParam(name ="from",defaultValue = "0") Long from,
-                                     @RequestParam(name ="size",defaultValue = "10") Long size){
+    public List<EventDto> getByParam(@RequestParam(name = "users", defaultValue = "") List<Long> users,
+                                     @RequestParam(name = "states", defaultValue = "") List<State> states,
+                                     @RequestParam(name = "categories", defaultValue = "") List<Long> categories,
+                                     @RequestParam(name = "rangeStart") Optional<String> rangeStart,
+                                     @RequestParam(name = "rangeEnd") Optional<String> rangeEnd,
+                                     @RequestParam(name = "from", defaultValue = "0") Long from,
+                                     @RequestParam(name = "size", defaultValue = "10") Long size) {
 
-        return adminEventService.findByParam(users,states,categories,rangeStart,rangeEnd,from,size);
+        return adminEventService.findByParam(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PutMapping("/events/{eventId}")
     public EventDto edit(@RequestBody EventDto eventDto,
-                         @PathVariable(name = "eventId") Long eventId){
-        return adminEventService.edit(eventDto,eventId);
+                         @PathVariable(name = "eventId") Long eventId) {
+        return adminEventService.edit(eventDto, eventId);
     }
 
     @PatchMapping("/events/{eventId}/publish")
-    public EventDto publish(@PathVariable(name = "eventId") Long eventId){
+    public EventDto publish(@PathVariable(name = "eventId") Long eventId) {
         return adminEventService.publish(eventId);
     }
 
     @PatchMapping("/events/{eventId}/reject")
-    public EventDto reject(@PathVariable(name = "eventId") Long eventId){
+    public EventDto reject(@PathVariable(name = "eventId") Long eventId) {
         return adminEventService.reject(eventId);
     }
 
     @PatchMapping("/events/undefined/publish")
-    public List<EventDto> undefined (){
+    public List<EventDto> undefined() {
         return adminEventService.undefined();
 
     }
-
 
 
 }

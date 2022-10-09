@@ -7,8 +7,6 @@ import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.model.State;
 import ru.practicum.events.storage.EventStorage;
-import ru.practicum.events.storage.LocationStorage;
-import ru.practicum.users.storage.UserStorage;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,15 +17,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class AdminEventService {
-    final private EventStorage eventStorage;
-    final private LocationStorage locationStorage;
-    final private UserStorage userStorage;
+
+    private final EventStorage eventStorage;
 
 
-    public AdminEventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage) {
+    public AdminEventService(EventStorage eventStorage) {
         this.eventStorage = eventStorage;
-        this.locationStorage = locationStorage;
-        this.userStorage = userStorage;
+
     }
 
 

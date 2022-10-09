@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Service
 public class EventService {
 
-    final private EventStorage eventStorage;
-    final private LocationStorage locationStorage;
-    final private UserStorage userStorage;
-    final private CategoryStorage categoryStorage;
+    private final EventStorage eventStorage;
+    private final LocationStorage locationStorage;
+    private final UserStorage userStorage;
+    private final CategoryStorage categoryStorage;
 
     public EventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage,
                         CategoryStorage categoryStorage) {

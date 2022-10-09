@@ -27,7 +27,7 @@ services:
       - "8080:8080"
     depends_on:
       - db-main
-      - stats-service
+      - stats-server
     environment:
       - SERVER_PORT=8080
       - STATS-SERVER_URL=http://stats-server:9090
@@ -38,7 +38,7 @@ services:
 
 
 
-  stats-service:
+  stats-server:
     build: ./statistics
     ports:
       - "9090:9090"

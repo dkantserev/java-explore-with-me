@@ -41,7 +41,7 @@ public class Client {
     }
 
     public void postStats(String url, String ip){
-        String path = "http://localhost:9090/hit";
+        String path = "http://stats-server:9090/hit";
         ModelStats m = new ModelStats();
         m.setApp("MainLogic");
         m.setUri(url);
@@ -51,7 +51,7 @@ public class Client {
     }
 
     public Long giveViews(Long eventId){
-        String path = "http://localhost:9090/views/"+eventId.toString();
+        String path = "http://stats-server:9090/views/"+eventId.toString();
         return getView(path,new HashMap<>());
     }
 

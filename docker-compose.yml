@@ -21,13 +21,13 @@ services:
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
 
-  main-server:
+  ewm-service:
     build: ./mainLogic
     ports:
       - "8080:8080"
     depends_on:
       - db-main
-      - stats-server
+      - stats-service
     environment:
       - SERVER_PORT=8080
       - STATS-SERVER_URL=http://stats-server:9090
@@ -38,7 +38,7 @@ services:
 
 
 
-  stats-server:
+  stats-service:
     build: ./statistics
     ports:
       - "9090:9090"

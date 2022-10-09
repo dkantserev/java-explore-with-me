@@ -27,7 +27,8 @@ public class EventService {
     final private UserStorage userStorage;
     final private CategoryStorage categoryStorage;
 
-    public EventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage, CategoryStorage categoryStorage) {
+    public EventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage,
+                        CategoryStorage categoryStorage) {
         this.eventStorage = eventStorage;
         this.locationStorage = locationStorage;
         this.userStorage = userStorage;
@@ -46,7 +47,7 @@ public class EventService {
         e.setLocation(locationStorage.findIdByCoordinates(event.getLocation().getLat(), event.getLocation().getLon())
                 .orElseThrow(RuntimeException::new));
         eventStorage.saveAndFlush(e);
-        var r=EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow(RuntimeException::new));
+        var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow(RuntimeException::new));
         r.setCategory(categoryStorage.findById(e.getCategory()).orElseThrow());
 
         return r;
@@ -74,25 +75,26 @@ public class EventService {
         List<EventDtoGuest> r = new ArrayList<>();
         eventStorage.findByUserId(userId, from).forEach(o -> r.add(EventDtoMapper.toDtoGuest(o)));
         for (EventDtoGuest eventDtoGuest : r) {
-            eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId()).orElseThrow().getCategory()).orElseThrow());
+            eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId())
+                    .orElseThrow().getCategory()).orElseThrow());
         }
         return r.stream().limit(size).collect(Collectors.toList());
     }
 
     public EventDtoGuest getById(Long userId, Long eventId) {
-        var r =EventDtoMapper.toDtoGuest(eventStorage.findByUserIdAndEventId(userId, eventId));
-        r.setCategory(categoryStorage.findById(eventStorage.findByUserIdAndEventId(userId, eventId).getCategory()).orElseThrow());
+        var r = EventDtoMapper.toDtoGuest(eventStorage.findByUserIdAndEventId(userId, eventId));
+        r.setCategory(categoryStorage.findById(eventStorage.findByUserIdAndEventId(userId, eventId).getCategory())
+                .orElseThrow());
         return r;
     }
 
     public EventDto cansel(Long userId, Long eventId) {
-        if(Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId) &&
-                eventStorage.findById(eventId).orElseThrow().getState()== State.PENDING){
+        if (Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId) &&
+                eventStorage.findById(eventId).orElseThrow().getState() == State.PENDING) {
             var r = eventStorage.findById(eventId).orElseThrow();
             r.setState(State.CANCELED);
             eventStorage.save(r);
             return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow());
-
         }
         throw new RuntimeException();
     }

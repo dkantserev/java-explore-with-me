@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class LocationDto {
 
-    private Long Id;
+    private Long id;
 
     private Float lat;
 

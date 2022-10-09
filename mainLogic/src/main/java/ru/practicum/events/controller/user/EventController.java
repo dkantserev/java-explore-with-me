@@ -15,8 +15,8 @@ import java.util.List;
 @RequestMapping(path = "/users")
 public class EventController {
 
-    final private EventService eventService;
-    final private Client client;
+    private final EventService eventService;
+    private final Client client;
 
     public EventController(EventService eventService, Client client) {
         this.eventService = eventService;

@@ -11,7 +11,7 @@ import ru.practicum.compilations.service.CompilationsService;
 @RequestMapping(path = "/admin/compilations")
 public class CompilationAdminController {
 
-    final private CompilationsService service;
+    private final CompilationsService service;
 
     public CompilationAdminController(CompilationsService service) {
         this.service = service;

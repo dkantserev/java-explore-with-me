@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping(path = "/categories")
 public class GuestCategoryController {
 
-    final private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public GuestCategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;

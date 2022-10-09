@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class ModelStats {
+
     private String app;
 
     private String uri;

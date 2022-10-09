@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping(path = "/compilations")
 public class CompilationGuestController {
 
-    final private CompilationsService service;
+    private final CompilationsService service;
 
     public CompilationGuestController(CompilationsService service) {
         this.service = service;

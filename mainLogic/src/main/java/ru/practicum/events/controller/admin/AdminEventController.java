@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequestMapping(path = "/admin")
 public class AdminEventController {
 
-    final private AdminEventService adminEventService;
+    private final AdminEventService adminEventService;
 
     public AdminEventController(AdminEventService adminEventService) {
         this.adminEventService = adminEventService;

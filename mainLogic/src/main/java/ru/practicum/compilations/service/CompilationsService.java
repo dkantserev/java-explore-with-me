@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class CompilationsService {
 
-    final private CompilationStorage storage;
-    final private EventStorage eventStorage;
+    private final CompilationStorage storage;
+    private final EventStorage eventStorage;
 
     public CompilationsService(CompilationStorage storage, EventStorage eventStorage) {
         this.storage = storage;

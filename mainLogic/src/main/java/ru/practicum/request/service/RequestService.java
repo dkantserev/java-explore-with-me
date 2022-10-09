@@ -18,7 +18,7 @@ import java.util.Objects;
 public class RequestService {
     private final RequestStorage requestStorage;
     private final EventStorage eventStorage;
-    final private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     public RequestService(RequestStorage requestStorage, EventStorage eventStorage, UserStorage userStorage) {
         this.requestStorage = requestStorage;

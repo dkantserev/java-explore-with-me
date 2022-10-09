@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    final private UserStorage userStorage;
+
+    private final UserStorage userStorage;
 
 
     public UserService(UserStorage userStorage) {

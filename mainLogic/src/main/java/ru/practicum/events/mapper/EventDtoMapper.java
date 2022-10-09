@@ -88,7 +88,7 @@ public class EventDtoMapper {
 
     public static LocationDto locationDto(Location location) {
         return LocationDto.builder()
-                .Id(location.getId())
+                .id(location.getId())
                 .lat(location.getLat())
                 .lon(location.getLon())
                 .build();

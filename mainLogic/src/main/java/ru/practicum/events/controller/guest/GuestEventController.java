@@ -16,8 +16,8 @@ import java.util.Optional;
 @RequestMapping(path = "/events")
 public class GuestEventController {
 
-    final private GuestEventService service;
-    final private Client client;
+    private final GuestEventService service;
+    private final Client client;
 
     public GuestEventController(GuestEventService service, Client client) {
         this.service = service;

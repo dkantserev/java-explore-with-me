@@ -28,6 +28,8 @@ services:
     depends_on:
       - db-main
       - stats-server
+    restart: on-failure
+
     environment:
       - SERVER_PORT=8080
       - STATS-SERVER_URL=http://stats-server:9090
@@ -44,8 +46,13 @@ services:
       - "9090:9090"
     depends_on:
       - db-stats
+
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-stats:5433/stats
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
       - SERVER-PORT=9090
+    restart: on-failure
+
+
+

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.HTTPclient.Client;
 
 import ru.practicum.events.dto.EventDtoGuest;
-import ru.practicum.events.service.GuestEventService;
+import ru.practicum.events.service.guest.GuestEventService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -35,6 +35,7 @@ public class GuestEventController {
                                            @RequestParam(name = "from", defaultValue = "0") Long from,
                                            @RequestParam(name = "size", defaultValue = "10") Long size,
                                            HttpServletRequest request) {
+        log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
         client.postStats(request.getRequestURI(), request.getRemoteAddr());
         return service.get(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
     }
@@ -43,6 +44,7 @@ public class GuestEventController {
     @GetMapping("/{id}")
     public EventDtoGuest getById(@PathVariable(name = "id") Long id,
                                  HttpServletRequest request) {
+        log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
         client.postStats(request.getRequestURI(), request.getRemoteAddr());
         return service.getById(id);
     }

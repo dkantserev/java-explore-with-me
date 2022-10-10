@@ -2,6 +2,8 @@ package ru.practicum.events.service.admin;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.errorApi.exception.EventNotFoundException;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;
@@ -16,6 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AdminEventService {
 
     private final EventStorage eventStorage;
@@ -130,21 +133,25 @@ public class AdminEventService {
             event.setLocation(EventDtoMapper.toLocation(eventDto.getLocation()));
         }
         eventStorage.saveAndFlush(event);
-        return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow(RuntimeException::new));
+        return EventDtoMapper.toDto(eventStorage.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException("event " + eventId + "user not found")));
     }
 
     public EventDto publish(Long eventId) {
         var event = eventStorage.findById(eventId).orElseThrow(RuntimeException::new);
         event.setState(State.PUBLISHED);
         eventStorage.saveAndFlush(event);
-        return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow(RuntimeException::new));
+        return EventDtoMapper.toDto(eventStorage.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException("event " + eventId + "user not found")));
     }
 
     public EventDto reject(Long eventId) {
-        var event = eventStorage.findById(eventId).orElseThrow(RuntimeException::new);
+        var event = eventStorage.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException("event " + eventId + "user not found"));
         event.setState(State.CANCELED);
         eventStorage.saveAndFlush(event);
-        return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow(RuntimeException::new));
+        return EventDtoMapper.toDto(eventStorage.findById(eventId)
+                .orElseThrow(() -> new EventNotFoundException("event " + eventId + "user not found")));
     }
 
     public List<EventDto> undefined() {

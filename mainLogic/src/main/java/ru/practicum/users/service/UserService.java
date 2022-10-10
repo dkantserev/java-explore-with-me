@@ -3,6 +3,8 @@ package ru.practicum.users.service;
 
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.mapper.UserDtoMapper;
 import ru.practicum.users.storage.UserStorage;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserStorage userStorage;

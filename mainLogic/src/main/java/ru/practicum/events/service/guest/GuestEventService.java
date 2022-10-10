@@ -1,15 +1,20 @@
-package ru.practicum.events.service;
+package ru.practicum.events.service.guest;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.HTTPclient.Client;
 import ru.practicum.categories.storage.CategoryStorage;
 
+import ru.practicum.errorApi.exception.CategoryNotFound;
+import ru.practicum.errorApi.exception.ClientNoConnectionException;
+import ru.practicum.errorApi.exception.EventNotFoundException;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.State;
 import ru.practicum.events.storage.EventStorage;
 import ru.practicum.request.storage.RequestStorage;
 
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class GuestEventService {
 
     private final EventStorage eventStorage;
@@ -99,7 +105,9 @@ public class GuestEventService {
         }
         for (EventDtoGuest eventDtoGuest : r) {
             eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId())
-                    .orElseThrow().getCategory()).orElseThrow());
+                    .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventDtoGuest.getId()
+                            + " was not found.")).getCategory()).orElseThrow(() ->
+                    new CategoryNotFound("Category  not found.")));
             eventDtoGuest.setViews(client.giveViews(eventDtoGuest.getId()));
             eventDtoGuest.setConfirmedRequests(requestStorage.countRequest(eventDtoGuest.getId()));
         }
@@ -121,7 +129,10 @@ public class GuestEventService {
     public EventDtoGuest getById(Long id) {
         if (eventStorage.findById(id).orElseThrow().getState() == State.PUBLISHED) {
             var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow());
-            r.setCategory(categoryStorage.findById(eventStorage.findById(id).orElseThrow().getCategory()).orElseThrow());
+            r.setCategory(categoryStorage.findById(eventStorage.findById(id)
+                            .orElseThrow(() -> new EventNotFoundException("Event with id=" + id + " was not found."))
+                            .getCategory())
+                    .orElseThrow(() -> new CategoryNotFound("Category  not found.")));
             r.setViews(client.giveViews(r.getId()));
             r.setConfirmedRequests(requestStorage.countRequest(r.getId()));
             return r;

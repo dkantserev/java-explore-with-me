@@ -1,11 +1,13 @@
 package ru.practicum.compilations.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.compilations.dto.CompilationDto;
 import ru.practicum.compilations.dto.CompilationDtoReturn;
 import ru.practicum.compilations.mapper.MapperCompilationDto;
 import ru.practicum.compilations.model.Compilation;
 import ru.practicum.compilations.storage.CompilationStorage;
+import ru.practicum.errorApi.exception.EventNotFoundException;
 import ru.practicum.events.model.Event;
 import ru.practicum.events.storage.EventStorage;
 
@@ -15,6 +17,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CompilationsService {
 
     private final CompilationStorage storage;
@@ -30,16 +33,19 @@ public class CompilationsService {
         var compilation = new Compilation();
         List<Event> l = new ArrayList<>();
 
-        dto.getEvents().forEach(o -> l.add(eventStorage.findById(o).orElseThrow(RuntimeException::new)));
+        dto.getEvents().forEach(o -> l.add(eventStorage.findById(o)
+                .orElseThrow(() -> new EventNotFoundException("event " + o + "not found"))));
 
         compilation.setEvents(l);
         compilation.setPinned(dto.isPinned());
         compilation.setTitle(dto.getTitle());
         Long id = storage.saveAndFlush(compilation).getId();
-        l.forEach(o -> o.getCompilation().add(storage.findById(id).orElseThrow(RuntimeException::new)));
+        l.forEach(o -> o.getCompilation().add(storage.findById(id)
+                .orElseThrow(() -> new EventNotFoundException("event " + id + "not found"))));
         eventStorage.flush();
 
-        return MapperCompilationDto.toDtoReturn(storage.findById(id).orElseThrow(RuntimeException::new));
+        return MapperCompilationDto.toDtoReturn(storage.findById(id)
+                .orElseThrow(() -> new EventNotFoundException("event " + id + "not found")));
 
 
     }

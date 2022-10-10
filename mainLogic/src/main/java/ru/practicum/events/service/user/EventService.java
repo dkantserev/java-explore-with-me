@@ -1,7 +1,12 @@
 package ru.practicum.events.service.user;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.categories.storage.CategoryStorage;
+import ru.practicum.errorApi.exception.CategoryNotFound;
+import ru.practicum.errorApi.exception.EventNotFoundException;
+import ru.practicum.errorApi.exception.LocationNotFoundException;
+import ru.practicum.errorApi.exception.UserNotFoundException;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.mapper.EventDtoMapper;
@@ -20,6 +25,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class EventService {
 
     private final EventStorage eventStorage;
@@ -42,13 +48,15 @@ public class EventService {
             locationStorage.save(EventDtoMapper.toLocation(event.getLocation()));
         }
         Long id = eventStorage.save(EventDtoMapper.toModel(event)).getId();
-        Event e = eventStorage.findById(id).orElseThrow(RuntimeException::new);
-        e.setUser(userStorage.findById(userId).orElseThrow(RuntimeException::new));
+        Event e = eventStorage.findById(id).orElseThrow(() -> new EventNotFoundException("event " + id + "not found"));
+        e.setUser(userStorage.findById(userId).orElseThrow(() -> new UserNotFoundException("User " + userId +
+                "not found")));
         e.setLocation(locationStorage.findIdByCoordinates(event.getLocation().getLat(), event.getLocation().getLon())
-                .orElseThrow(RuntimeException::new));
+                .orElseThrow(() -> new LocationNotFoundException("location not found")));
         eventStorage.saveAndFlush(e);
         var r = EventDtoMapper.toDtoGuest(eventStorage.findById(id).orElseThrow(RuntimeException::new));
-        r.setCategory(categoryStorage.findById(e.getCategory()).orElseThrow());
+        r.setCategory(categoryStorage.findById(e.getCategory())
+                .orElseThrow(() -> new CategoryNotFound("Category with id=" + e.getCategory() + " was not found.")));
 
         return r;
     }
@@ -67,7 +75,9 @@ public class EventService {
             updateEvent.setLocation(event.getLocation());
         }
         eventStorage.saveAndFlush(updateEvent);
-        return EventDtoMapper.toUpdateDto(eventStorage.findById(event.getEventId()).orElseThrow(RuntimeException::new));
+        return EventDtoMapper.toUpdateDto(eventStorage.findById(event.getEventId())
+                .orElseThrow(() -> new EventNotFoundException("Event with id=" + event.getEventId() +
+                        " was not found.")));
 
     }
 
@@ -76,7 +86,8 @@ public class EventService {
         eventStorage.findByUserId(userId, from).forEach(o -> r.add(EventDtoMapper.toDtoGuest(o)));
         for (EventDtoGuest eventDtoGuest : r) {
             eventDtoGuest.setCategory(categoryStorage.findById(eventStorage.findById(eventDtoGuest.getId())
-                    .orElseThrow().getCategory()).orElseThrow());
+                    .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventDtoGuest.getId() +
+                            " was not found.")).getCategory()).orElseThrow());
         }
         return r.stream().limit(size).collect(Collectors.toList());
     }
@@ -84,17 +95,20 @@ public class EventService {
     public EventDtoGuest getById(Long userId, Long eventId) {
         var r = EventDtoMapper.toDtoGuest(eventStorage.findByUserIdAndEventId(userId, eventId));
         r.setCategory(categoryStorage.findById(eventStorage.findByUserIdAndEventId(userId, eventId).getCategory())
-                .orElseThrow());
+                .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + " was not found.")));
         return r;
     }
 
     public EventDto cansel(Long userId, Long eventId) {
         if (Objects.equals(eventStorage.findById(eventId).orElseThrow().getUser().getId(), userId) &&
-                eventStorage.findById(eventId).orElseThrow().getState() == State.PENDING) {
+                eventStorage.findById(eventId)
+                        .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + " was not found."))
+                        .getState() == State.PENDING) {
             var r = eventStorage.findById(eventId).orElseThrow();
             r.setState(State.CANCELED);
             eventStorage.save(r);
-            return EventDtoMapper.toDto(eventStorage.findById(eventId).orElseThrow());
+            return EventDtoMapper.toDto(eventStorage.findById(eventId)
+                    .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + " was not found.")));
         }
         throw new RuntimeException();
     }

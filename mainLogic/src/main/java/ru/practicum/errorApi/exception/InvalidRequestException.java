@@ -3,7 +3,7 @@ package ru.practicum.errorApi.exception;
 import org.springframework.http.HttpStatus;
 import ru.practicum.errorApi.ApiError;
 
-public class InvalidRequestException extends RuntimeException{
+public class InvalidRequestException extends RuntimeException {
 
     public InvalidRequestException(String message) {
         super(message);

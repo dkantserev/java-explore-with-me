@@ -16,7 +16,7 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(RequestNotFoundException.class)
-    public ResponseEntity<ApiError> RequestNotFoundFound(RequestNotFoundException e) {
+    public ResponseEntity<ApiError> requestNotFoundFound(RequestNotFoundException e) {
         return new ResponseEntity<>(e.get(), HttpStatus.NOT_FOUND);
     }
 

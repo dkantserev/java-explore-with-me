@@ -13,12 +13,12 @@ public class ApiError {
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(FORMAT);
 
     private StackTraceElement[] errors;
-    private String 	message;
+    private String message;
     private String reason;
     private String status;
     private String timestamp;
 
-    public ApiError( String message, String reason, String status) {
+    public ApiError(String message, String reason, String status) {
         this.message = message;
         this.reason = reason;
         this.status = status;

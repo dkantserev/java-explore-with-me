@@ -2,8 +2,6 @@ package ru.practicum.events.controller.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.HTTPclient.Client;
-import ru.practicum.errorApi.exception.UserNotFoundException;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.model.UpdateEventRequest;

@@ -6,7 +6,7 @@ import ru.practicum.HTTPclient.Client;
 import ru.practicum.categories.storage.CategoryStorage;
 
 import ru.practicum.errorApi.exception.CategoryNotFound;
-import ru.practicum.errorApi.exception.ClientNoConnectionException;
+
 import ru.practicum.errorApi.exception.EventNotFoundException;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.mapper.EventDtoMapper;
@@ -14,7 +14,7 @@ import ru.practicum.events.model.State;
 import ru.practicum.events.storage.EventStorage;
 import ru.practicum.request.storage.RequestStorage;
 
-import java.net.UnknownHostException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

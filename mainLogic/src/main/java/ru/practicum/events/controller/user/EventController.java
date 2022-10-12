@@ -4,8 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
+import ru.practicum.events.dto.LocationShort;
+import ru.practicum.events.model.Address;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.service.user.EventService;
+import ru.practicum.events.service.user.LocationService;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -17,10 +21,12 @@ public class EventController {
 
     private final EventService eventService;
 
+    private final LocationService locationService;
 
-    public EventController(EventService eventService) {
+
+    public EventController(EventService eventService, LocationService locationService) {
         this.eventService = eventService;
-
+        this.locationService = locationService;
     }
 
     @PostMapping("/{userId}/events")
@@ -63,4 +69,35 @@ public class EventController {
         log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
         return eventService.cansel(userId, eventId);
     }
+
+    @GetMapping("/nearby/{lat}/{lon}/{distance}")
+    public List<EventDto> findNearby(@PathVariable(name = "lat") float lat,
+                                     @PathVariable(name = "lon") float lon,
+                                     @PathVariable(name = "distance") float distance) {
+        return eventService.searchFindNearbyByCoordinate(lat, lon, distance);
+    }
+
+    @GetMapping("/nearby")
+    public List<EventDto> findNearbyByAddress(@RequestParam(name = "city") String city,
+                                              @RequestParam(name = "street") String street,
+                                              @RequestParam(name = "number") String number,
+                                              @RequestParam(name = "distance") Float distance) {
+        return eventService.findNearbyByAddress(city, street, number, distance);
+    }
+
+
+    @GetMapping("/getlocation")
+    public LocationShort getLocationByAddress(@RequestParam(name = "city") String city,
+                                              @RequestParam(name = "street") String street,
+                                              @RequestParam(name = "number") String number) {
+        return locationService.toCoordinate(city, street, number);
+    }
+
+    @GetMapping("/getaddress")
+    public Address getAddress(@RequestParam(name = "lon") float lon,
+                              @RequestParam(name = "lat") float lat) {
+        return locationService.toAddress(lon, lat);
+    }
+
+
 }

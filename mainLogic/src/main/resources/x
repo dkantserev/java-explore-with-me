@@ -1,0 +1,17 @@
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 59.735813, 30.614271);
+
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 60, 31);
+
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 54, 20);
+
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 59.73, 30.62);
+
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 25, 40);
+
+INSERT INTO public.locations (id, lat, lon)
+VALUES (DEFAULT, 70, 32);

@@ -9,8 +9,10 @@ import ru.practicum.errorApi.exception.LocationNotFoundException;
 import ru.practicum.errorApi.exception.UserNotFoundException;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
+import ru.practicum.events.dto.LocationShort;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;
+import ru.practicum.events.model.Location;
 import ru.practicum.events.model.State;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.storage.EventStorage;
@@ -32,13 +34,15 @@ public class EventService {
     private final LocationStorage locationStorage;
     private final UserStorage userStorage;
     private final CategoryStorage categoryStorage;
+    private final LocationService locationService;
 
     public EventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage,
-                        CategoryStorage categoryStorage) {
+                        CategoryStorage categoryStorage, LocationService locationService) {
         this.eventStorage = eventStorage;
         this.locationStorage = locationStorage;
         this.userStorage = userStorage;
         this.categoryStorage = categoryStorage;
+        this.locationService = locationService;
     }
 
     public EventDtoGuest add(Long userId, EventDto event) {
@@ -111,5 +115,22 @@ public class EventService {
                     .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + " was not found.")));
         }
         throw new RuntimeException();
+    }
+
+    public List<EventDto> findNearbyByAddress(String city, String street, String number, Float distance) {
+        LocationShort location = locationService.toCoordinate(city, street, number);
+        List<EventDto> r = new ArrayList<>();
+        List<Location> l = locationStorage.searchLocationByFunctionDistance(location.getLat(), location.getLon(),
+                distance);
+        eventStorage.findByLocation(l).forEach(o -> r.add(EventDtoMapper.toDto(o)));
+        return r;
+    }
+
+    public List<EventDto> searchFindNearbyByCoordinate(float lat, float lon, float distance) {
+        List<EventDto> r = new ArrayList<>();
+        List<Location> l = locationStorage.searchLocationByFunctionDistance(lat, lon,
+                distance);
+        eventStorage.findByLocation(l).forEach(o -> r.add(EventDtoMapper.toDto(o)));
+        return r;
     }
 }

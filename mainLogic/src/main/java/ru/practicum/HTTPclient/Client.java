@@ -62,28 +62,27 @@ public class Client {
         return getView(path, new HashMap<>());
     }
 
-    public Address coordinateToAddress(float lon,float lat){
+    public Address coordinateToAddress(float lon, float lat) {
         String path = "https://api.geotree.ru/address.php?";
         String key = "A2tnnft2vxQj";
         Address address = new Address();
-        Gson g = new Gson();
         String urlTemplate = UriComponentsBuilder.fromHttpUrl(path)
                 .queryParam("key", "{key}")
                 .queryParam("lon", "{lon}")
                 .queryParam("lat", "{lat}")
                 .encode().toUriString();
-        Map<String, String> param = new HashMap<>();
-        param.put("lon", Float.toString(lon));
-        param.put("lat", Float.toString(lat));
-        param.put("key", key);
+        Map<String, String> QueryParam = new HashMap<>();
+        QueryParam.put("lon", Float.toString(lon));
+        QueryParam.put("lat", Float.toString(lat));
+        QueryParam.put("key", key);
         HttpEntity<String> requestEntity = new HttpEntity<>("", getHeaders());
         ResponseEntity<String> parse = rest.exchange(
                 urlTemplate, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<>() {
-                }, param);
-        JsonArray rr = JsonParser.parseString(Objects.requireNonNull(parse.getBody())).getAsJsonArray();
-        JsonObject q = rr.get(0).getAsJsonObject();
-        String s = q.getAsJsonPrimitive("value").getAsString();
+                }, QueryParam);
+        JsonArray asJsonArray = JsonParser.parseString(Objects.requireNonNull(parse.getBody())).getAsJsonArray();
+        JsonObject asJsonObject = asJsonArray.get(0).getAsJsonObject();
+        String s = asJsonObject.getAsJsonPrimitive("value").getAsString();
         address.setAddress(s);
         return address;
     }
@@ -105,19 +104,19 @@ public class Client {
                 .encode().toUriString();
         HttpEntity<String> requestEntity = new HttpEntity<>("", getHeaders());
 
-        Map<String, String> param = new HashMap<>();
-        param.put("term", term);
-        param.put("key", key);
-        ResponseEntity<String> parse = rest.exchange(
+        Map<String, String> QueryParam = new HashMap<>();
+        QueryParam.put("term", term);
+        QueryParam.put("key", key);
+        ResponseEntity<String> entity = rest.exchange(
                 urlTemplate, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<>() {
-                }, param);
-        if (Objects.requireNonNull(parse.getBody()).isEmpty()) {
+                }, QueryParam);
+        if (Objects.requireNonNull(entity.getBody()).isEmpty()) {
             throw new LocationNotFoundException("bad address");
         }
-        JsonArray rr = JsonParser.parseString(Objects.requireNonNull(parse.getBody())).getAsJsonArray();
-        JsonObject q = rr.get(0).getAsJsonObject();
-        location = g.fromJson(q.get("geo_center"), LocationShort.class);
+        JsonArray asJsonArray = JsonParser.parseString(Objects.requireNonNull(entity.getBody())).getAsJsonArray();
+        JsonObject asJsonObject = asJsonArray.get(0).getAsJsonObject();
+        location = g.fromJson(asJsonObject.get("geo_center"), LocationShort.class);
         return location;
     }
 

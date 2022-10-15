@@ -8,19 +8,19 @@ import ru.practicum.events.model.Address;
 @Service
 public class LocationService {
 
-  private final Client client;
+  private final Client HttpClient;
 
     public LocationService( Client client) {
 
-        this.client = client;
+        this.HttpClient = client;
     }
 
     public LocationShort toCoordinate(String city, String street, String number){
-        return client.addressToLocation(city,street,number);
+        return HttpClient.addressToLocation(city,street,number);
     }
 
     public Address toAddress(float lon, float lat){
-       return client.coordinateToAddress(lon,lat);
+       return HttpClient.coordinateToAddress(lon,lat);
     }
 
 

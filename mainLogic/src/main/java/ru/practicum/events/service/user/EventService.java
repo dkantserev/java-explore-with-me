@@ -119,18 +119,18 @@ public class EventService {
 
     public List<EventDto> findNearbyByAddress(String city, String street, String number, Float distance) {
         LocationShort location = locationService.toCoordinate(city, street, number);
-        List<EventDto> r = new ArrayList<>();
-        List<Location> l = locationStorage.searchLocationByFunctionDistance(location.getLat(), location.getLon(),
+        List<EventDto> returnList = new ArrayList<>();
+        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(location.getLat(), location.getLon(),
                 distance);
-        eventStorage.findByLocation(l).forEach(o -> r.add(EventDtoMapper.toDto(o)));
-        return r;
+        eventStorage.findByLocation(locationList).forEach(o -> returnList.add(EventDtoMapper.toDto(o)));
+        return returnList;
     }
 
     public List<EventDto> searchFindNearbyByCoordinate(float lat, float lon, float distance) {
-        List<EventDto> r = new ArrayList<>();
-        List<Location> l = locationStorage.searchLocationByFunctionDistance(lat, lon,
+        List<EventDto> returnList = new ArrayList<>();
+        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(lat, lon,
                 distance);
-        eventStorage.findByLocation(l).forEach(o -> r.add(EventDtoMapper.toDto(o)));
-        return r;
+        eventStorage.findByLocation(locationList).forEach(o -> returnList.add(EventDtoMapper.toDto(o)));
+        return returnList;
     }
 }

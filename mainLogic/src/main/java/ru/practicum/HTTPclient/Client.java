@@ -89,7 +89,7 @@ public class Client {
 
     public LocationShort addressToLocation(String city, String street, String number) {
 
-        if (city.equalsIgnoreCase("сантк-петербург")) {
+        if (city.equalsIgnoreCase("санкт-петербург")) {
             city = "петербург";
         }
 

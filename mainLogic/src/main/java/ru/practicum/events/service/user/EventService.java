@@ -17,6 +17,7 @@ import ru.practicum.events.model.State;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.storage.EventStorage;
 import ru.practicum.events.storage.LocationStorage;
+import ru.practicum.geocoding.geoService.LocationService;
 import ru.practicum.users.storage.UserStorage;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,9 +128,12 @@ public class EventService {
         return returnList;
     }
 
-    public List<EventDto> searchFindNearbyByCoordinate(float lat, float lon, float distance) {
+    public List<EventDto> searchFindNearbyByCoordinate(Optional<Float> lat, Optional<Float> lon, float distance) {
+        if(lat.isEmpty()||lon.isEmpty()){
+            throw new RuntimeException("bad param");
+        }
         List<EventDto> returnList = new ArrayList<>();
-        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(lat, lon,
+        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(lat.get(), lon.get(),
                 distance);
         eventStorage.findByLocation(locationList).forEach(o -> returnList.add(EventDtoMapper.toDto(o)));
         return returnList;

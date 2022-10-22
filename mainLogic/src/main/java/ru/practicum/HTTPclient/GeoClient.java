@@ -62,13 +62,13 @@ public class GeoClient extends Client {
                 .encode().toUriString();
         HttpEntity<String> requestEntity = new HttpEntity<>("", getHeaders());
 
-        Map<String, String> QueryParam = new HashMap<>();
-        QueryParam.put("term", term);
-        QueryParam.put("key", key);
+        Map<String, String> queryParam = new HashMap<>();
+        queryParam.put("term", term);
+        queryParam.put("key", key);
         ResponseEntity<String> entity = rest.exchange(
                 urlTemplate, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<>() {
-                }, QueryParam);
+                }, queryParam);
         if (Objects.requireNonNull(entity.getBody()).isEmpty()) {
             throw new LocationNotFoundException("bad address");
         }

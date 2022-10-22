@@ -129,9 +129,11 @@ public class EventService {
     }
 
     public List<EventDto> searchFindNearbyByCoordinate(Optional<Float> lat, Optional<Float> lon, float distance) {
-        if(lat.isEmpty()||lon.isEmpty()){
+
+        if (lat.isEmpty() || lon.isEmpty()) {
             throw new RuntimeException("bad param");
         }
+
         List<EventDto> returnList = new ArrayList<>();
         List<Location> locationList = locationStorage.searchLocationByFunctionDistance(lat.get(), lon.get(),
                 distance);

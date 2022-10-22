@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
-import ru.practicum.events.dto.LocationShort;
-import ru.practicum.events.model.Address;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.service.user.EventService;
-import ru.practicum.geocoding.geoService.LocationService;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +18,6 @@ import java.util.Optional;
 public class EventController {
 
     private final EventService eventService;
-
 
 
     public EventController(EventService eventService) {
@@ -71,7 +67,7 @@ public class EventController {
 
 
     @GetMapping("/nearby")
-    public List<EventDto> findNearbyByAddress(@RequestParam(name = "city") Optional<String > city,
+    public List<EventDto> findNearbyByAddress(@RequestParam(name = "city") Optional<String> city,
                                               @RequestParam(name = "street") Optional<String> street,
                                               @RequestParam(name = "number") Optional<String> number,
                                               @RequestParam(name = "lat") Optional<Float> lat,
@@ -80,11 +76,10 @@ public class EventController {
                                               HttpServletRequest request) {
         log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
 
-        return ((city.isPresent()&&street.isPresent()&&number.isPresent()) ?
+        return ((city.isPresent() && street.isPresent() && number.isPresent()) ?
                 eventService.findNearbyByAddress(city.get(), street.get(), number.get(), distance) :
                 eventService.searchFindNearbyByCoordinate(lat, lon, distance));
     }
-
 
 
 }

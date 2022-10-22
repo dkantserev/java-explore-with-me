@@ -32,15 +32,15 @@ public class GeoClient extends Client {
                 .queryParam("lon", "{lon}")
                 .queryParam("lat", "{lat}")
                 .encode().toUriString();
-        Map<String, String> QueryParam = new HashMap<>();
-        QueryParam.put("lon", Float.toString(lon));
-        QueryParam.put("lat", Float.toString(lat));
-        QueryParam.put("key", key);
+        Map<String, String> queryParam = new HashMap<>();
+        queryParam.put("lon", Float.toString(lon));
+        queryParam.put("lat", Float.toString(lat));
+        queryParam.put("key", key);
         HttpEntity<String> requestEntity = new HttpEntity<>("", getHeaders());
         ResponseEntity<String> parse = rest.exchange(
                 urlTemplate, HttpMethod.GET, requestEntity,
                 new ParameterizedTypeReference<>() {
-                }, QueryParam);
+                }, queryParam);
         JsonArray asJsonArray = JsonParser.parseString(Objects.requireNonNull(parse.getBody())).getAsJsonArray();
         JsonObject asJsonObject = asJsonArray.get(0).getAsJsonObject();
         String s = asJsonObject.getAsJsonPrimitive("value").getAsString();

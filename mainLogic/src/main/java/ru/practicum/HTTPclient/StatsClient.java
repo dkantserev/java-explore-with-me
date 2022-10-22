@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 @Service
-public class StatsClient extends Client{
+public class StatsClient extends Client {
 
     private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern(FORMAT);

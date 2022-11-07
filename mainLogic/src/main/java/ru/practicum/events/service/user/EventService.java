@@ -9,12 +9,15 @@ import ru.practicum.errorApi.exception.LocationNotFoundException;
 import ru.practicum.errorApi.exception.UserNotFoundException;
 import ru.practicum.events.dto.EventDto;
 import ru.practicum.events.dto.EventDtoGuest;
+import ru.practicum.events.dto.LocationShort;
 import ru.practicum.events.mapper.EventDtoMapper;
 import ru.practicum.events.model.Event;
+import ru.practicum.events.model.Location;
 import ru.practicum.events.model.State;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.storage.EventStorage;
 import ru.practicum.events.storage.LocationStorage;
+import ru.practicum.geocoding.geoService.LocationService;
 import ru.practicum.users.storage.UserStorage;
 
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,13 +36,15 @@ public class EventService {
     private final LocationStorage locationStorage;
     private final UserStorage userStorage;
     private final CategoryStorage categoryStorage;
+    private final LocationService locationService;
 
     public EventService(EventStorage eventStorage, LocationStorage locationStorage, UserStorage userStorage,
-                        CategoryStorage categoryStorage) {
+                        CategoryStorage categoryStorage, LocationService locationService) {
         this.eventStorage = eventStorage;
         this.locationStorage = locationStorage;
         this.userStorage = userStorage;
         this.categoryStorage = categoryStorage;
+        this.locationService = locationService;
     }
 
     public EventDtoGuest add(Long userId, EventDto event) {
@@ -111,5 +117,27 @@ public class EventService {
                     .orElseThrow(() -> new EventNotFoundException("Event with id=" + eventId + " was not found.")));
         }
         throw new RuntimeException();
+    }
+
+    public List<EventDto> findNearbyByAddress(String city, String street, String number, Float distance) {
+        LocationShort location = locationService.toCoordinate(city, street, number);
+        List<EventDto> returnList = new ArrayList<>();
+        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(location.getLat(), location.getLon(),
+                distance);
+        eventStorage.findByLocation(locationList).forEach(o -> returnList.add(EventDtoMapper.toDto(o)));
+        return returnList;
+    }
+
+    public List<EventDto> searchFindNearbyByCoordinate(Optional<Float> lat, Optional<Float> lon, float distance) {
+
+        if (lat.isEmpty() || lon.isEmpty()) {
+            throw new RuntimeException("bad param");
+        }
+
+        List<EventDto> returnList = new ArrayList<>();
+        List<Location> locationList = locationStorage.searchLocationByFunctionDistance(lat.get(), lon.get(),
+                distance);
+        eventStorage.findByLocation(locationList).forEach(o -> returnList.add(EventDtoMapper.toDto(o)));
+        return returnList;
     }
 }

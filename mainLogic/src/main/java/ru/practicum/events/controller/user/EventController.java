@@ -7,8 +7,10 @@ import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.model.UpdateEventRequest;
 import ru.practicum.events.service.user.EventService;
 
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -20,7 +22,6 @@ public class EventController {
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
-
     }
 
     @PostMapping("/{userId}/events")
@@ -63,4 +64,22 @@ public class EventController {
         log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
         return eventService.cansel(userId, eventId);
     }
+
+
+    @GetMapping("/nearby")
+    public List<EventDto> findNearbyByAddress(@RequestParam(name = "city") Optional<String> city,
+                                              @RequestParam(name = "street") Optional<String> street,
+                                              @RequestParam(name = "number") Optional<String> number,
+                                              @RequestParam(name = "lat") Optional<Float> lat,
+                                              @RequestParam(name = "lon") Optional<Float> lon,
+                                              @RequestParam(name = "distance", defaultValue = "1") float distance,
+                                              HttpServletRequest request) {
+        log.info(request.getRequestURI() + " " + request.getQueryString() + " " + request.getMethod());
+
+        return ((city.isPresent() && street.isPresent() && number.isPresent()) ?
+                eventService.findNearbyByAddress(city.get(), street.get(), number.get(), distance) :
+                eventService.searchFindNearbyByCoordinate(lat, lon, distance));
+    }
+
+
 }

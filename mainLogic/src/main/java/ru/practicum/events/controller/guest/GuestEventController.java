@@ -2,8 +2,8 @@ package ru.practicum.events.controller.guest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.HTTPclient.Client;
 
+import ru.practicum.HTTPclient.StatsClient;
 import ru.practicum.events.dto.EventDtoGuest;
 import ru.practicum.events.service.guest.GuestEventService;
 
@@ -17,9 +17,9 @@ import java.util.Optional;
 public class GuestEventController {
 
     private final GuestEventService service;
-    private final Client client;
+    private final StatsClient client;
 
-    public GuestEventController(GuestEventService service, Client client) {
+    public GuestEventController(GuestEventService service, StatsClient client) {
         this.service = service;
         this.client = client;
     }

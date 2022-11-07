@@ -1,2 +1,25 @@
-# java-explore-with-me
-Template repository for ExploreWithMe project.
+pullrequest [github link](https://github.com/dkantserev/java-explore-with-me/pull/1#issue-1402308827)
+Дипломный проект.
+Приложение Explore With Me.
+В приложении можно предложить какое-либо событие от выставки до похода в кино и набрать компанию для участия в нём. Приложение состоит из 2х сервисов:
+
+1.  Основной сервис — делится по уровню доступа :
+- [x] Administrator - отвечает за модерацию событий, создание пользователей, управление компиляцией событий.
+- [x] User - отвечает за создание событий, подачу заявок на участие, подтверждение заявок.
+- [x] Guest - просмотр событий.
+2. Сервис статистики - позволяет пользователям отслеживать самые популярные события.
+   Приложение использует объектно-реляционную базу данных PostgreSQL.
+   схема базы основного сервиса
+   ![enter image description here](/main.png)
+   схема базы сервера статистики
+   ![enter image description here](/stats.png)
+   Приложение написано с использованием фреймворка  Spring boot.
+   За автоматизацию сборки отвечает фреймворк Maven.
+   Для взаимодействия с базой данных выбрана библиотека Hibernate.
+   Взаимодействие между сервисами осуществляется при помощи Http запросов.
+   схема взаимодействия сервисов
+   ![enter image description here](/shema.png)
+   спецификация основного сервиса [main](https://raw.githubusercontent.com/yandex-praktikum/java-explore-with-me/main/ewm-main-service-spec.json)
+   спецификация сервера статистики [stats](https://raw.githubusercontent.com/yandex-praktikum/java-explore-with-me/main/ewm-stats-service-spec.json)
+   Основной сервис работает на порту 8080, сервер статистики порт 9090.
+   Docker compose запускает для каждого сервиса отдельную базу данных на портах 5433/5432.

@@ -1,15 +1,58 @@
-version: '3.1'
+version: '3.8'
 services:
-  stats-server:
+  db-stats:
+    image: postgres:13.7-alpine
+    expose:
+      - "5433"
     ports:
-      - "9090:9090"
+      - "6541:5433"
+    command: -p 5433
 
-  stats-db:
-    image: postgres:14-alpine
+    environment:
+      - POSTGRES_DB=stats
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+  db-main:
+    image: postgres:13.7-alpine
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=explore
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
 
   ewm-service:
+    build: ./mainLogic
     ports:
       - "8080:8080"
+    depends_on:
+      - db-main
+      - stats-server
 
-  ewm-db:
-    image: postgres:14-alpine
+
+    environment:
+      - SERVER_PORT=8080
+      - STATS-SERVER_URL=http://stats-server:9090
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-main:5432/explore
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+
+
+
+
+  stats-server:
+    build: ./statistics
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db-stats
+
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-stats:5433/stats
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - SERVER-PORT=9090
+
+
+
+

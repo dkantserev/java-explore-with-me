@@ -2,7 +2,7 @@ package ru.practicum.events.service.guest;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.HTTPclient.Client;
+import ru.practicum.HTTPclient.StatsClient;
 import ru.practicum.categories.storage.CategoryStorage;
 
 import ru.practicum.errorApi.exception.CategoryNotFound;
@@ -29,10 +29,10 @@ public class GuestEventService {
 
     private final EventStorage eventStorage;
     private final CategoryStorage categoryStorage;
-    private final Client client;
+    private final StatsClient client;
     private final RequestStorage requestStorage;
 
-    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage, Client client,
+    public GuestEventService(EventStorage eventStorage, CategoryStorage categoryStorage, StatsClient client,
                              RequestStorage requestStorage) {
         this.eventStorage = eventStorage;
         this.categoryStorage = categoryStorage;

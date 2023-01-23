@@ -10,15 +10,15 @@ pullrequest [github link](https://github.com/dkantserev/java-explore-with-me/pul
 2. Сервис статистики - позволяет пользователям отслеживать самые популярные события.    
    Приложение использует объектно-реляционную базу данных PostgreSQL.     
    схема базы основного сервиса  
-   ![enter image description here](/main.png)
-   схема базы сервера статистики
-   ![enter image description here](/stats.png)  
+   ![enter image description here](/main.png)  
+   схема базы сервера статистики  
+   ![enter image description here](/stats.png)   
    Приложение написано с использованием фреймворка  Spring boot.  
    За автоматизацию сборки отвечает фреймворк Maven.  
    Для взаимодействия с базой данных выбрана библиотека Hibernate.  
    Взаимодействие между сервисами осуществляется при помощи Http запросов.  
    схема взаимодействия сервисов  
-   ![enter image description here](/shema.png)
+   ![enter image description here](/shema.png)  
    спецификация основного сервиса [main](https://raw.githubusercontent.com/yandex-praktikum/java-explore-with-me/main/ewm-main-service-spec.json)  
    спецификация сервера статистики [stats](https://raw.githubusercontent.com/yandex-praktikum/java-explore-with-me/main/ewm-stats-service-spec.json)  
    Основной сервис работает на порту 8080, сервер статистики порт 9090.  

@@ -1,6 +1,6 @@
-pullrequest [github link](https://github.com/dkantserev/java-explore-with-me/pull/1#issue-1402308827)
-Дипломный проект.
-Приложение Explore With Me.
+pullrequest [github link](https://github.com/dkantserev/java-explore-with-me/pull/1#issue-1402308827)  
+# Дипломный проект.
+## Приложение Explore With Me.
 В приложении можно предложить какое-либо событие от выставки до похода в кино и набрать компанию для участия в нём. Приложение состоит из 2х сервисов:
 
 1.  **Основной сервис** — делится по уровню доступа :
